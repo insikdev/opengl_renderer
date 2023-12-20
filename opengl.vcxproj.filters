@@ -1,2 +1,114 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" />
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="app.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="pch.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="renderer.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="gl_frame_buffer.cpp">
+      <Filter>wrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="gl_texture.cpp">
+      <Filter>wrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="gl_render_buffer.cpp">
+      <Filter>wrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="gl_buffer.cpp">
+      <Filter>wrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="gl_vertex_array.cpp">
+      <Filter>wrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="gl_program.cpp">
+      <Filter>wrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="gl_shader.cpp">
+      <Filter>wrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="mesh.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="geometry_helper.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="camera.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="README.md" />
+    <None Include="shaders\simple.frag">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="shaders\simple.vert">
+      <Filter>shaders</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="app.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="pch.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="renderer.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="gl_frame_buffer.h">
+      <Filter>wrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="gl_texture.h">
+      <Filter>wrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="gl_render_buffer.h">
+      <Filter>wrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="gl_object.h">
+      <Filter>wrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="gl_buffer.h">
+      <Filter>wrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="gl_vertex_array.h">
+      <Filter>wrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="gl_program.h">
+      <Filter>wrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="gl_shader.h">
+      <Filter>wrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="utils.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="mesh.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="geometry_helper.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="camera.h">
+      <Filter>src</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="wrapper">
+      <UniqueIdentifier>{d71e8a4b-df87-4bc1-85a2-08c0066f23e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{a4292dd2-aa29-4b67-a493-9c1f1501b668}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="shaders">
+      <UniqueIdentifier>{06fb13ea-f60c-4aba-90cd-0dd51e695165}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
