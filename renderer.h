@@ -28,6 +28,7 @@ private:
     GLFWwindow* const p_window;
     std::unique_ptr<FrameBuffer> p_frameBuffer;
     std::unique_ptr<Program> p_program;
+    std::unique_ptr<Program> p_normalProgram;
     Gui* p_gui;
     Camera m_camera {};
 

@@ -30,13 +30,13 @@ void Gui::Render()
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
 
-    ImGui::Begin("GUI", 0, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize);
+    ImGui::Begin("GUI", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_AlwaysAutoResize);
     ImGui::SetWindowPos(ImVec2(10, 10));
-    ImGui::SetWindowSize(ImVec2(200, 100));
 
     ImGui::Text("%.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
     ImGui::Checkbox("wireframe", &m_options.wireframe);
     ImGui::Checkbox("cull backface", &m_options.cullBackface);
+    ImGui::Checkbox("draw normal", &m_options.drawNormal);
 
     ImGui::End();
 

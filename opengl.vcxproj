@@ -152,6 +152,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />
+    <None Include="shaders\draw_normal.frag" />
+    <None Include="shaders\draw_normal.geo" />
+    <None Include="shaders\draw_normal.vert" />
     <None Include="shaders\simple.frag" />
     <None Include="shaders\simple.vert" />
   </ItemGroup>

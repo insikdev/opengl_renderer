@@ -28,4 +28,5 @@ struct MeshInfo {
 struct GuiOptions {
     bool wireframe { false };
     bool cullBackface { false };
+    bool drawNormal { false };
 };

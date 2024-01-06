@@ -53,6 +53,16 @@ void Renderer::Render(void)
     m_texture->Bind();
     m_mesh->Draw();
 
+    if (m_guiOptions.drawNormal) {
+        p_normalProgram->Use();
+        p_program->SetUniform("world", glm::rotate(glm::mat4(1.0f), glm::radians(angle), glm::vec3(0, 1.0f, 0)));
+        p_program->SetUniform("view", m_camera.GetViewMatrix());
+        p_program->SetUniform("projection", m_camera.GetProjectionMatrix());
+
+        m_texture->Bind();
+        m_mesh->Draw();
+    }
+
     p_gui->Render();
     p_frameBuffer->DrawToScreen();
     angle += 1.0f;
@@ -88,20 +98,33 @@ void Renderer::InitFrameBuffer(void)
 
 void Renderer::InitProgram(void)
 {
-    std::vector<ShaderInfo> shaders = {
+    std::vector<ShaderInfo> simpleShaders = {
         { "shaders/simple.vert", GL_VERTEX_SHADER },
         { "shaders/simple.frag", GL_FRAGMENT_SHADER },
     };
 
-    p_program = std::make_unique<Program>(shaders);
+    p_program = std::make_unique<Program>(simpleShaders);
+
+    std::vector<ShaderInfo> normalShaders = {
+        { "shaders/draw_normal.vert", GL_VERTEX_SHADER },
+        { "shaders/draw_normal.geo", GL_GEOMETRY_SHADER },
+        { "shaders/draw_normal.frag", GL_FRAGMENT_SHADER },
+    };
+
+    p_normalProgram = std::make_unique<Program>(normalShaders);
+
+    // m_mesh = new Mesh { GeometryHelper::CreateRectangle() };
     m_mesh = new Mesh { GeometryHelper::CreateCube() };
+    // m_mesh = new Mesh { GeometryHelper::CreatePlane(10, 5) };
     m_texture = new Texture { "assets/wall.jpg" };
 }
 
 void Renderer::SetState(void)
 {
-    glClearColor(0.5f, 1.0f, 1.0f, 1.0f);
-    glEnable(GL_DEPTH_TEST);
-    glFrontFace(GL_CW);
+    glFrontFace(GL_CCW);
     glCullFace(GL_BACK);
+    glClearColor(0.5f, 1.0f, 1.0f, 1.0f);
+
+    glEnable(GL_DEPTH_TEST);
+    glDisable(GL_CULL_FACE);
 }
