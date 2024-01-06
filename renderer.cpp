@@ -5,6 +5,7 @@
 #include "mesh.h"
 #include "geometry_helper.h"
 #include "gl_texture.h"
+#include "gui.h"
 
 Renderer::Renderer(GLFWwindow* pWindow)
     : p_window { pWindow }
@@ -13,10 +14,12 @@ Renderer::Renderer(GLFWwindow* pWindow)
     InitFrameBuffer();
     InitProgram();
     SetState();
+    p_gui = new Gui { p_window, m_guiOptions };
 }
 
 Renderer::~Renderer()
 {
+    delete p_gui;
 }
 
 void Renderer::Update(float dt)
@@ -25,21 +28,32 @@ void Renderer::Update(float dt)
 
 void Renderer::Render(void)
 {
+    if (m_guiOptions.wireframe) {
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    } else {
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    }
+
+    if (m_guiOptions.cullBackface) {
+        glEnable(GL_CULL_FACE);
+    } else {
+        glDisable(GL_CULL_FACE);
+    }
+
     static float angle = 0.0f;
     p_frameBuffer->Bind();
-    int width;
-    int height;
-    glfwGetFramebufferSize(p_window, &width, &height);
-    auto projection = glm::perspective(glm::radians(45.0f), width / static_cast<float>(height), 0.1f, 50.0f);
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
     p_program->Use();
     p_program->SetUniform("world", glm::rotate(glm::mat4(1.0f), glm::radians(angle), glm::vec3(0, 1.0f, 0)));
     p_program->SetUniform("view", m_camera.GetViewMatrix());
-    p_program->SetUniform("projection", projection);
-    // glActiveTexture(GL_TEXTURE0);
+    p_program->SetUniform("projection", m_camera.GetProjectionMatrix());
+
     m_texture->Bind();
     m_mesh->Draw();
+
+    p_gui->Render();
     p_frameBuffer->DrawToScreen();
     angle += 1.0f;
 }
@@ -47,6 +61,7 @@ void Renderer::Render(void)
 void Renderer::SetSize(uint32_t width, uint32_t height)
 {
     p_frameBuffer->Resize(width, height);
+    m_camera.m_aspect = width / static_cast<float>(height);
 }
 
 void Renderer::LoadFunctions(void)
@@ -67,6 +82,7 @@ void Renderer::InitFrameBuffer(void)
     glfwGetFramebufferSize(p_window, &width, &height);
 
     p_frameBuffer = std::make_unique<FrameBuffer>(width, height);
+    m_camera.m_aspect = width / static_cast<float>(height);
     glViewport(0, 0, width, height);
 }
 
@@ -86,4 +102,6 @@ void Renderer::SetState(void)
 {
     glClearColor(0.5f, 1.0f, 1.0f, 1.0f);
     glEnable(GL_DEPTH_TEST);
+    glFrontFace(GL_CW);
+    glCullFace(GL_BACK);
 }

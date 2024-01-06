@@ -43,6 +43,9 @@
     <ClCompile Include="camera.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="gui.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />
@@ -97,6 +100,9 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="camera.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="gui.h">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>

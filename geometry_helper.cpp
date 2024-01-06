@@ -71,7 +71,6 @@ MeshInfo GeometryHelper::CreateCube(void)
         { { -1.0f, -1.0f, -1.0f }, { -1.0f, 0.0f, 0.0f }, { 0.0f, 1.0f } }
     };
 
-    // VK_FRONT_FACE_COUNTER_CLOCKWISE
     out.indices = {
         0, 2, 3, 0, 1, 2, // Front face
         4, 6, 7, 4, 5, 6, // Back face

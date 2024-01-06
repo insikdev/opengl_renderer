@@ -141,6 +141,7 @@
     <ClCompile Include="gl_shader.cpp" />
     <ClCompile Include="gl_texture.cpp" />
     <ClCompile Include="gl_vertex_array.cpp" />
+    <ClCompile Include="gui.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mesh.cpp" />
     <ClCompile Include="pch.cpp">
@@ -166,6 +167,7 @@
     <ClInclude Include="gl_shader.h" />
     <ClInclude Include="gl_texture.h" />
     <ClInclude Include="gl_vertex_array.h" />
+    <ClInclude Include="gui.h" />
     <ClInclude Include="mesh.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="renderer.h" />
