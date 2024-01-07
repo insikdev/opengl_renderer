@@ -17,6 +17,7 @@ private:
 
 private: // callback
     void HandleFrameBufferSizeChange(int width, int height);
+    void HandleKey(int key, int scancode, int action, int mods);
 
 private:
     GLFWwindow* m_window {};

@@ -22,7 +22,7 @@ void App::Run(void)
     glfwSwapInterval(1); // vsync
 
     while (!glfwWindowShouldClose(m_window)) {
-        // p_renderer->Update();
+        p_renderer->Update();
         p_renderer->Render();
         glfwSwapBuffers(m_window);
         glfwPollEvents();
@@ -63,10 +63,21 @@ void App::SetCallback(void)
     glfwSetFramebufferSizeCallback(m_window, [](GLFWwindow* window, int width, int height) {
         reinterpret_cast<App*>(glfwGetWindowUserPointer(window))->HandleFrameBufferSizeChange(width, height);
     });
+
+    glfwSetKeyCallback(m_window, [](GLFWwindow* window, int key, int scancode, int action, int mods) {
+        reinterpret_cast<App*>(glfwGetWindowUserPointer(window))->HandleKey(key, scancode, action, mods);
+    });
 }
 
 void App::HandleFrameBufferSizeChange(int width, int height)
 {
     glViewport(0, 0, width, height);
     p_renderer->SetSize(width, height);
+}
+
+void App::HandleKey(int key, int scancode, int action, int mods)
+{
+    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
+        glfwSetWindowShouldClose(m_window, true);
+    }
 }

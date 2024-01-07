@@ -5,7 +5,6 @@
 class FrameBuffer;
 class Program;
 class Mesh;
-class Texture;
 class Gui;
 class Model;
 class Cubemap;
@@ -16,7 +15,7 @@ public:
     ~Renderer();
 
 public:
-    void Update(float dt);
+    void Update(void);
     void Render(void);
     void SetSize(uint32_t width, uint32_t height);
 
@@ -30,9 +29,11 @@ private:
     GLFWwindow* const p_window;
     std::unique_ptr<FrameBuffer> p_frameBuffer;
     Gui* p_gui;
+
+public:
     Camera m_camera {};
 
-private: // program
+private: // shader program
     const Program* p_program;
     const Program* p_normalProgram;
     const Program* p_skyboxProgram;

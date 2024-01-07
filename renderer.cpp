@@ -28,8 +28,10 @@ Renderer::~Renderer()
     delete p_skyboxProgram;
 }
 
-void Renderer::Update(float dt)
+void Renderer::Update()
 {
+    float dt = ImGui::GetIO().DeltaTime;
+    m_camera.Update(p_window, dt);
 }
 
 void Renderer::Render(void)
@@ -74,7 +76,7 @@ void Renderer::Render(void)
         glDisable(GL_CULL_FACE);
 
         p_skyboxProgram->Use();
-        glm::mat4 view = glm::mat4(glm::mat3(m_camera.GetViewMatrix())) * glm::scale(glm::mat4(1.0f), glm::vec3(30.0f));
+        glm::mat4 view = glm::mat4(glm::mat3(m_camera.GetViewMatrix()));
         p_program->SetUniform("view", view);
         p_program->SetUniform("projection", m_camera.GetProjectionMatrix());
         m_cubemap->Bind();
@@ -140,12 +142,11 @@ void Renderer::InitProgram(void)
     p_skyboxProgram = new Program { skyboxPrograms };
 
     // m_mesh = new Mesh { GeometryHelper::CreateRectangle() };
-    m_cube = new Mesh { GeometryHelper::CreateCube() };
+    m_cube = new Mesh { GeometryHelper::CreateCube(60.0f) };
     // m_mesh = new Mesh { GeometryHelper::CreatePlane(10, 5) };
     // m_mesh = new Mesh { GeometryHelper::CreateCylinder(0.5f, 1.0f, 1.0f, 50) };
     // m_cube = new Mesh { GeometryHelper::CreateSphere() };
     m_model = new Model { "models/backpack/backpack.obj" };
-    // m_model = new Model { "models/ToyCar/ToyCar.gltf" };
 
     m_cubemap = new Cubemap { {
         "skybox/posx.jpg",
