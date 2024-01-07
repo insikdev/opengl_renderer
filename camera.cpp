@@ -11,7 +11,7 @@ Camera::Camera(float fov, float aspect, float nearZ, float farZ)
 
 glm::mat4 Camera::GetViewMatrix(void)
 {
-    return glm::lookAt(m_position, glm::vec3(0), glm::vec3(0.0f, 1.0f, 0.0f));
+    return glm::lookAt(m_position, glm::vec3(0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 }
 
 glm::mat4 Camera::GetProjectionMatrix(void)

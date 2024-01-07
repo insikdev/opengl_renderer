@@ -2,6 +2,7 @@
 #include "mesh.h"
 #include "gl_buffer.h"
 #include "gl_vertex_array.h"
+#include "material.h"
 
 Mesh::Mesh(const MeshInfo& info)
 {
@@ -20,9 +21,12 @@ Mesh::~Mesh()
 {
 }
 
-void Mesh::Draw(void)
+void Mesh::Draw(const Program* program)
 {
     m_vertexArray->Bind();
+    if (m_material) {
+        m_material->SetToProgram(program);
+    }
     glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(m_indexBuffer->GetCount()), GL_UNSIGNED_INT, 0);
     m_vertexArray->Unbind();
 }

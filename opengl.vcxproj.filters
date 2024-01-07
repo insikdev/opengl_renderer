@@ -46,6 +46,13 @@
     <ClCompile Include="gui.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="model.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="material.cpp" />
+    <ClCompile Include="gl_cubemap.cpp">
+      <Filter>wrapper</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />
@@ -62,6 +69,12 @@
       <Filter>shaders</Filter>
     </None>
     <None Include="shaders\draw_normal.vert">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="shaders\skybox.frag">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="shaders\skybox.vert">
       <Filter>shaders</Filter>
     </None>
   </ItemGroup>
@@ -113,6 +126,13 @@
     </ClInclude>
     <ClInclude Include="gui.h">
       <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="model.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="material.h" />
+    <ClInclude Include="gl_cubemap.h">
+      <Filter>wrapper</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

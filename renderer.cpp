@@ -6,6 +6,8 @@
 #include "geometry_helper.h"
 #include "gl_texture.h"
 #include "gui.h"
+#include "model.h"
+#include "gl_cubemap.h"
 
 Renderer::Renderer(GLFWwindow* pWindow)
     : p_window { pWindow }
@@ -19,7 +21,11 @@ Renderer::Renderer(GLFWwindow* pWindow)
 
 Renderer::~Renderer()
 {
+    delete m_cube;
     delete p_gui;
+    delete p_program;
+    delete p_normalProgram;
+    delete p_skyboxProgram;
 }
 
 void Renderer::Update(float dt)
@@ -46,21 +52,34 @@ void Renderer::Render(void)
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     p_program->Use();
-    p_program->SetUniform("world", glm::rotate(glm::mat4(1.0f), glm::radians(angle), glm::vec3(0, 1.0f, 0)));
+    glm::mat4 world(1.0f);
+    // world = glm::scale(world, glm::vec3(0.01f, 0.01f, 0.01f));
+    //  world = glm::rotate(world, glm::radians(angle), glm::vec3(0, 1.0f, 0));
+    p_program->SetUniform("world", world);
     p_program->SetUniform("view", m_camera.GetViewMatrix());
     p_program->SetUniform("projection", m_camera.GetProjectionMatrix());
 
-    m_texture->Bind();
-    m_mesh->Draw();
+    m_model->Draw(p_program);
 
     if (m_guiOptions.drawNormal) {
         p_normalProgram->Use();
-        p_program->SetUniform("world", glm::rotate(glm::mat4(1.0f), glm::radians(angle), glm::vec3(0, 1.0f, 0)));
+        p_program->SetUniform("world", world);
         p_program->SetUniform("view", m_camera.GetViewMatrix());
         p_program->SetUniform("projection", m_camera.GetProjectionMatrix());
 
-        m_texture->Bind();
-        m_mesh->Draw();
+        m_model->Draw(p_program);
+    }
+
+    { // skybox
+        glDisable(GL_CULL_FACE);
+
+        p_skyboxProgram->Use();
+        glm::mat4 view = glm::mat4(glm::mat3(m_camera.GetViewMatrix())) * glm::scale(glm::mat4(1.0f), glm::vec3(30.0f));
+        p_program->SetUniform("view", view);
+        p_program->SetUniform("projection", m_camera.GetProjectionMatrix());
+        m_cubemap->Bind();
+        p_program->SetUniform("skybox", 0);
+        m_cube->Draw(p_skyboxProgram);
     }
 
     p_gui->Render();
@@ -103,7 +122,7 @@ void Renderer::InitProgram(void)
         { "shaders/simple.frag", GL_FRAGMENT_SHADER },
     };
 
-    p_program = std::make_unique<Program>(simpleShaders);
+    p_program = new Program { simpleShaders };
 
     std::vector<ShaderInfo> normalShaders = {
         { "shaders/draw_normal.vert", GL_VERTEX_SHADER },
@@ -111,12 +130,31 @@ void Renderer::InitProgram(void)
         { "shaders/draw_normal.frag", GL_FRAGMENT_SHADER },
     };
 
-    p_normalProgram = std::make_unique<Program>(normalShaders);
+    p_normalProgram = new Program { normalShaders };
+
+    std::vector<ShaderInfo> skyboxPrograms = {
+        { "shaders/skybox.vert", GL_VERTEX_SHADER },
+        { "shaders/skybox.frag", GL_FRAGMENT_SHADER },
+    };
+
+    p_skyboxProgram = new Program { skyboxPrograms };
 
     // m_mesh = new Mesh { GeometryHelper::CreateRectangle() };
-    m_mesh = new Mesh { GeometryHelper::CreateCube() };
+    m_cube = new Mesh { GeometryHelper::CreateCube() };
     // m_mesh = new Mesh { GeometryHelper::CreatePlane(10, 5) };
-    m_texture = new Texture { "assets/wall.jpg" };
+    // m_mesh = new Mesh { GeometryHelper::CreateCylinder(0.5f, 1.0f, 1.0f, 50) };
+    // m_cube = new Mesh { GeometryHelper::CreateSphere() };
+    m_model = new Model { "models/backpack/backpack.obj" };
+    // m_model = new Model { "models/ToyCar/ToyCar.gltf" };
+
+    m_cubemap = new Cubemap { {
+        "skybox/posx.jpg",
+        "skybox/negx.jpg",
+        "skybox/posy.jpg",
+        "skybox/negy.jpg",
+        "skybox/posz.jpg",
+        "skybox/negz.jpg",
+    } };
 }
 
 void Renderer::SetState(void)
@@ -126,5 +164,4 @@ void Renderer::SetState(void)
     glClearColor(0.5f, 1.0f, 1.0f, 1.0f);
 
     glEnable(GL_DEPTH_TEST);
-    glDisable(GL_CULL_FACE);
 }

@@ -23,6 +23,8 @@ Shader::Shader(const std::string& filename, GLenum type)
         SPDLOG_ERROR("reason: {}", infoLog);
         exit(EXIT_FAILURE);
     }
+
+    SPDLOG_INFO("compile shader: {}", filename);
 }
 
 Shader::~Shader()

@@ -15,8 +15,9 @@ public:
     ~Program();
 
 public:
-    void Use(void);
-    void SetUniform(const std::string& name, const glm::mat4& value);
+    void Use(void) const;
+    void SetUniform(const std::string& name, const glm::mat4& value) const;
+    void SetUniform(const std::string& name, int value) const;
 
 private:
     void LinkShaders(const std::vector<ShaderInfo>& shaders);

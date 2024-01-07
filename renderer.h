@@ -7,6 +7,8 @@ class Program;
 class Mesh;
 class Texture;
 class Gui;
+class Model;
+class Cubemap;
 
 class Renderer {
 public:
@@ -27,14 +29,18 @@ private:
 private:
     GLFWwindow* const p_window;
     std::unique_ptr<FrameBuffer> p_frameBuffer;
-    std::unique_ptr<Program> p_program;
-    std::unique_ptr<Program> p_normalProgram;
     Gui* p_gui;
     Camera m_camera {};
 
+private: // program
+    const Program* p_program;
+    const Program* p_normalProgram;
+    const Program* p_skyboxProgram;
+
 private:
-    Mesh* m_mesh;
-    Texture* m_texture;
+    Model* m_model;
+    Mesh* m_cube;
+    Cubemap* m_cubemap;
 
 private:
     GuiOptions m_guiOptions;
