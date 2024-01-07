@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "gl_texture.h"
-#define STB_IMAGE_IMPLEMENTATION
-#include <stb_image.h>
+#include "image.h"
 
 Texture::Texture(int width, int height, GLenum format)
     : m_width { width }
@@ -18,23 +17,12 @@ Texture::Texture(const std::string& path)
     glGenTextures(1, &m_id);
     Bind();
 
-    int channelCount;
-    stbi_set_flip_vertically_on_load(true);
-    uint8_t* pData = stbi_load(path.c_str(), &m_width, &m_height, &channelCount, 0);
+    Image image { path };
+    m_width = image.GetWidth();
+    m_height = image.GetHeight();
+    m_format = image.GetFormat();
 
-    if (!pData) {
-        SPDLOG_ERROR("Failed to load image : {}", path);
-        exit(EXIT_FAILURE);
-    }
-
-    if (channelCount == 3) {
-        m_format = GL_RGB;
-    } else if (channelCount == 4) {
-        m_format = GL_RGBA;
-    }
-
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_width, m_height, 0, m_format, GL_UNSIGNED_BYTE, pData);
-    stbi_image_free(pData);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_width, m_height, 0, m_format, GL_UNSIGNED_BYTE, image.GetData());
 
     SetFilter(GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR);
     SetWrap(GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE);

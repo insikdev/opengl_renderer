@@ -3,10 +3,6 @@
 #include "gl_program.h"
 #include "gl_texture.h"
 
-Material::Material()
-{
-}
-
 void Material::SetToProgram(const Program* program) const
 {
     int textureCount = 0;

@@ -49,9 +49,14 @@
     <ClCompile Include="model.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="material.cpp" />
     <ClCompile Include="gl_cubemap.cpp">
       <Filter>wrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="material.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="image.cpp">
+      <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -130,9 +135,14 @@
     <ClInclude Include="model.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="material.h" />
     <ClInclude Include="gl_cubemap.h">
       <Filter>wrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="material.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="image.h">
+      <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

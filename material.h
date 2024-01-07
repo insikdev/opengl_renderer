@@ -5,7 +5,7 @@ class Program;
 
 class Material {
 public:
-    Material();
+    Material() = default;
     ~Material() = default;
 
 public:

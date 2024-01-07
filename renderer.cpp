@@ -141,11 +141,7 @@ void Renderer::InitProgram(void)
 
     p_skyboxProgram = new Program { skyboxPrograms };
 
-    // m_mesh = new Mesh { GeometryHelper::CreateRectangle() };
     m_cube = new Mesh { GeometryHelper::CreateCube(60.0f) };
-    // m_mesh = new Mesh { GeometryHelper::CreatePlane(10, 5) };
-    // m_mesh = new Mesh { GeometryHelper::CreateCylinder(0.5f, 1.0f, 1.0f, 50) };
-    // m_cube = new Mesh { GeometryHelper::CreateSphere() };
     m_model = new Model { "models/backpack/backpack.obj" };
 
     m_cubemap = new Cubemap { {
