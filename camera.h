@@ -2,7 +2,7 @@
 
 class Camera {
 public:
-    Camera(float fov = 55.0f, float aspect = 1.7f, float nearZ = 1.0f, float farZ = 50.0f);
+    Camera(float fov = 55.0f, float aspect = 1.7f, float nearZ = 0.1f, float farZ = 100.0f);
     ~Camera() = default;
 
 public:

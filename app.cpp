@@ -71,8 +71,10 @@ void App::SetCallback(void)
 
 void App::HandleFrameBufferSizeChange(int width, int height)
 {
-    glViewport(0, 0, width, height);
-    p_renderer->SetSize(width, height);
+    int w = glm::max(1, width);
+    int h = glm::max(1, height);
+    glViewport(0, 0, w, h);
+    p_renderer->SetSize(w, h);
 }
 
 void App::HandleKey(int key, int scancode, int action, int mods)

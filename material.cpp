@@ -5,19 +5,15 @@
 
 void Material::SetToProgram(const Program* program) const
 {
-    int textureCount = 0;
     if (diffuse) {
-        glActiveTexture(GL_TEXTURE0 + textureCount);
-        program->SetUniform("material.diffuse", textureCount);
+        glActiveTexture(GL_TEXTURE0);
+        program->SetUniform("material.diffuse", 0);
         diffuse->Bind();
-        textureCount++;
     }
     if (specular) {
-        glActiveTexture(GL_TEXTURE0 + textureCount);
-        program->SetUniform("material.specular", textureCount);
+        glActiveTexture(GL_TEXTURE1);
+        program->SetUniform("material.specular", 1);
         specular->Bind();
-        textureCount++;
     }
-    glActiveTexture(GL_TEXTURE0);
     program->SetUniform("material.shininess", shininess);
 }

@@ -21,10 +21,10 @@ Buffer::~Buffer()
 
 void Buffer::Bind(void)
 {
-    // glBindBuffer(m_type, m_id);
+    glBindBuffer(m_type, m_id);
 }
 
 void Buffer::Unbind(void)
 {
-    // glBindBuffer(m_type, 0);
+    glBindBuffer(m_type, 0);
 }

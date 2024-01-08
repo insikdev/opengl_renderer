@@ -8,6 +8,7 @@ class Mesh;
 class Gui;
 class Model;
 class Cubemap;
+class Uniform;
 
 class Renderer {
 public:
@@ -42,6 +43,7 @@ private:
     Model* m_model;
     Mesh* m_cube;
     Cubemap* m_cubemap;
+    Uniform* m_uniform;
 
 private:
     GuiOptions m_guiOptions;

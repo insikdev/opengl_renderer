@@ -15,9 +15,9 @@ public: // getter
     GLsizeiptr GetStride(void) const { return m_stride; }
     GLsizeiptr GetCount(void) const { return m_count; }
 
-private:
-    GLenum m_type;
-    GLenum m_usage;
-    GLsizeiptr m_stride;
-    GLsizeiptr m_count;
+protected:
+    const GLenum m_type;
+    const GLenum m_usage;
+    const GLsizeiptr m_stride;
+    const GLsizeiptr m_count;
 };

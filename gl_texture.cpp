@@ -9,6 +9,7 @@ Texture::Texture(int width, int height, GLenum format)
 {
     glGenTextures(1, &m_id);
     Bind();
+    // only allocate memory not copy data
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_width, m_height, 0, m_format, GL_UNSIGNED_BYTE, nullptr);
 }
 

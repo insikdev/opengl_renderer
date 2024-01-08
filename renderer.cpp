@@ -8,6 +8,7 @@
 #include "gui.h"
 #include "model.h"
 #include "gl_cubemap.h"
+#include "gl_uniform.h"
 
 Renderer::Renderer(GLFWwindow* pWindow)
     : p_window { pWindow }
@@ -21,6 +22,7 @@ Renderer::Renderer(GLFWwindow* pWindow)
 
 Renderer::~Renderer()
 {
+    delete m_uniform;
     delete m_cube;
     delete p_gui;
     delete p_program;
@@ -53,35 +55,40 @@ void Renderer::Render(void)
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+    // uniform buffer
+    m_uniform->Bind();
+    m_uniform->CopyData(0, sizeof(glm::mat4), glm::value_ptr(m_camera.GetViewMatrix()));
+    m_uniform->CopyData(sizeof(glm::mat4), sizeof(glm::mat4), glm::value_ptr(m_camera.GetProjectionMatrix()));
+
+    m_uniform->Unbind();
+
     p_program->Use();
+
     glm::mat4 world(1.0f);
     // world = glm::scale(world, glm::vec3(0.01f, 0.01f, 0.01f));
     //  world = glm::rotate(world, glm::radians(angle), glm::vec3(0, 1.0f, 0));
     p_program->SetUniform("world", world);
-    p_program->SetUniform("view", m_camera.GetViewMatrix());
-    p_program->SetUniform("projection", m_camera.GetProjectionMatrix());
+    p_program->SetUniform("cameraPos", m_camera.m_position);
 
     m_model->Draw(p_program);
 
     if (m_guiOptions.drawNormal) {
         p_normalProgram->Use();
         p_program->SetUniform("world", world);
-        p_program->SetUniform("view", m_camera.GetViewMatrix());
-        p_program->SetUniform("projection", m_camera.GetProjectionMatrix());
-
         m_model->Draw(p_program);
     }
 
     { // skybox
         glDisable(GL_CULL_FACE);
+        glDepthFunc(GL_LEQUAL);
 
         p_skyboxProgram->Use();
-        glm::mat4 view = glm::mat4(glm::mat3(m_camera.GetViewMatrix()));
-        p_program->SetUniform("view", view);
-        p_program->SetUniform("projection", m_camera.GetProjectionMatrix());
+        glActiveTexture(GL_TEXTURE0);
         m_cubemap->Bind();
-        p_program->SetUniform("skybox", 0);
+        p_skyboxProgram->SetUniform("skybox", 0);
         m_cube->Draw(p_skyboxProgram);
+
+        glDepthFunc(GL_LESS);
     }
 
     p_gui->Render();
@@ -120,8 +127,8 @@ void Renderer::InitFrameBuffer(void)
 void Renderer::InitProgram(void)
 {
     std::vector<ShaderInfo> simpleShaders = {
-        { "shaders/simple.vert", GL_VERTEX_SHADER },
-        { "shaders/simple.frag", GL_FRAGMENT_SHADER },
+        { "shaders/env.vert", GL_VERTEX_SHADER },
+        { "shaders/env.frag", GL_FRAGMENT_SHADER },
     };
 
     p_program = new Program { simpleShaders };
@@ -141,7 +148,7 @@ void Renderer::InitProgram(void)
 
     p_skyboxProgram = new Program { skyboxPrograms };
 
-    m_cube = new Mesh { GeometryHelper::CreateCube(60.0f) };
+    m_cube = new Mesh { GeometryHelper::CreateCube() };
     m_model = new Model { "models/backpack/backpack.obj" };
 
     m_cubemap = new Cubemap { {
@@ -152,6 +159,8 @@ void Renderer::InitProgram(void)
         "skybox/posz.jpg",
         "skybox/negz.jpg",
     } };
+
+    m_uniform = new Uniform { 0, GL_STATIC_DRAW, sizeof(glm::mat4), 2 };
 }
 
 void Renderer::SetState(void)

@@ -31,6 +31,8 @@ void Camera::Update(GLFWwindow* pWindow, float dt)
 
         if (m_prevPos.x != 0 && m_prevPos.y != 0) {
             m_yaw -= x - m_prevPos.x;
+            m_pitch -= y - m_prevPos.y;
+            m_pitch = glm::clamp(m_pitch, -30.0f, 30.0f);
         }
         m_prevPos.x = x;
         m_prevPos.y = y;
@@ -41,7 +43,9 @@ void Camera::Update(GLFWwindow* pWindow, float dt)
 
 glm::mat4 Camera::GetViewMatrix(void)
 {
-    m_front = glm::rotate(glm::mat4(1.0f), glm::radians(m_yaw), glm::vec3(0.0f, 1.0f, 0.0f)) * glm::vec4(0.0f, 0.0f, -1.0f, 0.0f);
+    m_front = glm::rotate(glm::mat4(1.0f), glm::radians(m_yaw), glm::vec3(0.0f, 1.0f, 0.0f))
+        * glm::rotate(glm::mat4(1.0f), glm::radians(m_pitch), glm::vec3(1.0f, 0.0f, 0.0f))
+        * glm::vec4(0.0f, 0.0f, -1.0f, 0.0f);
 
     return glm::lookAt(m_position, m_position + m_front, m_up);
 }
