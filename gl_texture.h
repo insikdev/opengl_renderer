@@ -4,7 +4,7 @@
 
 class Texture : public GLBindableObject {
 public:
-    Texture(int width, int height, GLenum format);
+    Texture(int width, int height, GLenum format, GLenum type = GL_UNSIGNED_BYTE);
     Texture(const std::string& path);
     ~Texture();
 

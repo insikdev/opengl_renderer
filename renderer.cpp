@@ -34,6 +34,22 @@ void Renderer::Update()
 {
     float dt = ImGui::GetIO().DeltaTime;
     m_camera.Update(p_window, dt);
+
+    if (glfwGetMouseButton(p_window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
+        double x, y;
+        glfwGetCursorPos(p_window, &x, &y);
+
+        float pixels[4];
+
+        glBindFramebuffer(GL_READ_FRAMEBUFFER, p_frameBuffer->GetId());
+        glReadBuffer(GL_COLOR_ATTACHMENT1);
+        glReadPixels(static_cast<int>(x), p_frameBuffer->GetHeight() - static_cast<int>(y), 1, 1, GL_RGBA, GL_FLOAT, pixels);
+        glReadBuffer(GL_NONE);
+        glBindFramebuffer(GL_READ_FRAMEBUFFER, 0);
+
+        // SPDLOG_INFO("{},{},{},{}", pixels[0], pixels[1], pixels[2], pixels[3]);
+        m_model->IsSelect = (pixels[0] == 1.0f);
+    }
 }
 
 void Renderer::Render(void)
@@ -69,6 +85,8 @@ void Renderer::Render(void)
     //  world = glm::rotate(world, glm::radians(angle), glm::vec3(0, 1.0f, 0));
     p_program->SetUniform("world", world);
     p_program->SetUniform("cameraPos", m_camera.m_position);
+    p_program->SetUniform("select", m_model->IsSelect ? 1 : 0);
+    p_program->SetUniform("id", 1.0f);
 
     m_model->Draw(p_program);
 
@@ -127,8 +145,8 @@ void Renderer::InitFrameBuffer(void)
 void Renderer::InitProgram(void)
 {
     std::vector<ShaderInfo> simpleShaders = {
-        { "shaders/env.vert", GL_VERTEX_SHADER },
-        { "shaders/env.frag", GL_FRAGMENT_SHADER },
+        { "shaders/simple.vert", GL_VERTEX_SHADER },
+        { "shaders/simple.frag", GL_FRAGMENT_SHADER },
     };
 
     p_program = new Program { simpleShaders };

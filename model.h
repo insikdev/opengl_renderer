@@ -22,4 +22,7 @@ private:
 private:
     std::vector<Mesh*> m_meshes;
     std::vector<Material*> m_materials;
+
+public:
+    bool IsSelect { false };
 };

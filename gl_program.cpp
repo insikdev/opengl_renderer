@@ -38,6 +38,12 @@ void Program::SetUniform(const std::string& name, int value) const
     glUniform1i(loc, value);
 }
 
+void Program::SetUniform(const std::string& name, float value) const
+{
+    auto loc = glGetUniformLocation(m_id, name.c_str());
+    glUniform1f(loc, value);
+}
+
 void Program::LinkShaders(const std::vector<ShaderInfo>& infos)
 {
     std::vector<std::unique_ptr<Shader>> shaders;
