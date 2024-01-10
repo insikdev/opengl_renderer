@@ -9,7 +9,6 @@ Cubemap::Cubemap(const std::vector<std::string>& files)
 
     for (unsigned int i = 0; i < files.size(); i++) {
         Image image { files[i], false };
-
         glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGBA, image.GetWidth(), image.GetHeight(), 0, image.GetFormat(), GL_UNSIGNED_BYTE, image.GetData());
     }
 

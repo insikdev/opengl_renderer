@@ -33,11 +33,13 @@ Model::Model(const std::string& filename)
         Material* glMaterial = new Material {};
         glMaterial->diffuse = LoadTexture(material, aiTextureType_DIFFUSE);
         glMaterial->specular = LoadTexture(material, aiTextureType_SPECULAR);
+        glMaterial->normal = LoadTexture(material, aiTextureType_HEIGHT);
+
         m_materials.push_back(glMaterial);
     }
 
     ProcessNode(scene->mRootNode, scene);
-    SPDLOG_INFO("load Model: {}", filename);
+    SPDLOG_INFO("load model: {}", filename);
 }
 
 Model::~Model()

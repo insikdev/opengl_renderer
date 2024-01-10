@@ -18,6 +18,7 @@ struct Vertex {
     glm::vec3 position;
     glm::vec3 normal;
     glm::vec2 uv;
+    glm::vec3 tangent;
 };
 
 struct MeshInfo {
@@ -25,8 +26,16 @@ struct MeshInfo {
     std::vector<uint32_t> indices;
 };
 
+struct Light {
+    alignas(16) glm::vec3 pos;
+    alignas(16) glm::vec3 dir;
+    alignas(4) float cutoffStart;
+    alignas(4) float cutoffEnd;
+};
+
 struct GuiOptions {
     bool wireframe { false };
     bool cullBackface { false };
     bool drawNormal { false };
+    Light* light;
 };

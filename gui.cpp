@@ -38,6 +38,10 @@ void Gui::Render()
     ImGui::Checkbox("cull backface", &m_options.cullBackface);
     ImGui::Checkbox("draw normal", &m_options.drawNormal);
 
+    ImGui::SliderFloat3("light.pos", glm::value_ptr(m_options.light->pos), -2.0f, 2.0f);
+    ImGui::SliderFloat3("light.dir", glm::value_ptr(m_options.light->dir), -2.0f, 2.0f);
+    ImGui::SliderFloat("light.cutoff Start", &m_options.light->cutoffStart, glm::cos(glm::radians(5.0f)), glm::cos(glm::radians(15.0f)));
+    ImGui::SliderFloat("light.cutoff End", &m_options.light->cutoffEnd, glm::cos(glm::radians(15.0f)), glm::cos(glm::radians(35.0f)));
     ImGui::End();
 
     ImGui::Render();

@@ -44,6 +44,8 @@ private:
     Mesh* m_cube;
     Cubemap* m_cubemap;
     Uniform* m_uniform;
+    Uniform* m_uniformLight;
+    Light m_light;
 
 private:
     GuiOptions m_guiOptions;

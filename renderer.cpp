@@ -17,12 +17,14 @@ Renderer::Renderer(GLFWwindow* pWindow)
     InitFrameBuffer();
     InitProgram();
     SetState();
+    m_guiOptions.light = &m_light;
     p_gui = new Gui { p_window, m_guiOptions };
 }
 
 Renderer::~Renderer()
 {
     delete m_uniform;
+    delete m_uniformLight;
     delete m_cube;
     delete p_gui;
     delete p_program;
@@ -33,6 +35,11 @@ Renderer::~Renderer()
 void Renderer::Update()
 {
     float dt = ImGui::GetIO().DeltaTime;
+
+    if (ImGui::GetIO().WantCaptureMouse) {
+        return;
+    }
+
     m_camera.Update(p_window, dt);
 
     if (glfwGetMouseButton(p_window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
@@ -54,6 +61,7 @@ void Renderer::Update()
 
 void Renderer::Render(void)
 {
+
     if (m_guiOptions.wireframe) {
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     } else {
@@ -75,8 +83,11 @@ void Renderer::Render(void)
     m_uniform->Bind();
     m_uniform->CopyData(0, sizeof(glm::mat4), glm::value_ptr(m_camera.GetViewMatrix()));
     m_uniform->CopyData(sizeof(glm::mat4), sizeof(glm::mat4), glm::value_ptr(m_camera.GetProjectionMatrix()));
-
     m_uniform->Unbind();
+
+    m_uniformLight->Bind();
+    m_uniform->CopyData(0, sizeof(Light), &m_light);
+    m_uniformLight->Unbind();
 
     p_program->Use();
 
@@ -179,6 +190,12 @@ void Renderer::InitProgram(void)
     } };
 
     m_uniform = new Uniform { 0, GL_STATIC_DRAW, sizeof(glm::mat4), 2 };
+    m_uniformLight = new Uniform { 1, GL_STATIC_DRAW, sizeof(Light), 1 };
+
+    m_light.pos = glm::vec3(0.0f, 0.0f, 3.0f);
+    m_light.dir = glm::vec3(0.0f, 0.0f, -1.0f);
+    m_light.cutoffStart = glm::cos(glm::radians(10.0f));
+    m_light.cutoffEnd = glm::cos(glm::radians(20.0f));
 }
 
 void Renderer::SetState(void)

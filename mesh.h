@@ -13,6 +13,7 @@ public:
 
 public:
     void Draw(const Program* program);
+    static void ComputeTangents(std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices);
 
 public:
     void SetMaterial(Material* material) { m_material = material; }

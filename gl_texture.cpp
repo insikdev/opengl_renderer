@@ -28,6 +28,8 @@ Texture::Texture(const std::string& path)
     SetFilter(GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR);
     SetWrap(GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE);
     glGenerateMipmap(GL_TEXTURE_2D);
+
+    SPDLOG_INFO("create texture: {}", path.c_str());
 }
 
 Texture::~Texture()
